@@ -10,7 +10,7 @@ Esse é um exemplo com resultados de uma pesquisa real, disponiveis em um arquiv
 Lê o dataframe do arquivo e faz alguns ajustes
 
 ```{r}
-this_df <- read.csv("escalonadores.csv", header=TRUE, sep=",")
+this_df <- read.csv("csv/escalonadores.csv", header=TRUE, sep=",")
 
 #cria um novo dataframe que e criado a partir do anterior, agrupando os resultados das repeticoes de cada escalonador numa unica linha, com o valor de tempo medio.
 library(plyr)
