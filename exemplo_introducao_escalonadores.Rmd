@@ -1,0 +1,83 @@
+---
+title: "Exemplo dos algoritmos de escalonamento"
+author: "Francieli Zanon Boito"
+date: "February 16, 2017"
+output: html_document
+---
+
+Esse é um exemplo com resultados de uma pesquisa real, disponiveis em um arquivo .csv. As figuras foram geradas para a motivaçao do documento.
+
+Lê o dataframe do arquivo e faz alguns ajustes
+
+```{r}
+this_df <- read.csv("escalonadores.csv", header=TRUE, sep=",")
+
+#cria um novo dataframe que e criado a partir do anterior, agrupando os resultados das repeticoes de cada escalonador numa unica linha, com o valor de tempo medio.
+library(plyr)
+this_clean_df <- ddply(this_df, c("sched"), summarize, mean = mean(time), median = median(time), num = length(time))
+```
+
+Plota tempo médio
+
+```{r}
+library(ggplot2)
+
+mytheme <- theme_bw(base_size=9, base_family = "Times") + 
+        theme(panel.background=element_blank(), 
+              text=element_text(size=9), 
+              panel.border=element_blank(), 
+              plot.title = element_text(size=9), 
+              axis.ticks.y = element_blank(), 
+              axis.text.y = element_blank(), 
+              axis.text.x = element_text(family = "Times", size=8, face = "bold"), 
+              axis.ticks.x = element_blank(), 
+              legend.title = element_blank(), 
+              panel.grid.major = element_blank(), 
+              panel.grid.minor = element_blank()) 
+
+
+p1 <- ggplot(this_clean_df, aes(x = sched, y = mean)) + 
+    mytheme +
+    ylim(0,90) +
+    geom_bar(stat="identity", color = "#5B9DAD", fill = "#5B9DAD") + 
+    xlab("") + ylab("Tempo médio (segundos)") +
+    geom_text(aes(label = sprintf("%.2f", mean)), vjust = -0.5, size=2.7, family="Times");
+p1
+```
+
+Gera o pdf (para o material escrito)
+
+```{r}
+pdf(file="figuras/introducao_media.pdf", width=2.4, height=1.6, useDingbats = FALSE)
+p1
+dev.off()
+```
+
+Plota as repetições
+
+```{r}
+mytheme <- theme_bw(base_size=9, base_family = "Times") + 
+        theme(panel.background=element_blank(), 
+              text=element_text(size=9), 
+              plot.title = element_text(size=9),  
+              axis.text.x = element_blank(), 
+              axis.ticks.x = element_blank(), 
+              legend.title = element_blank(), 
+              panel.grid.major = element_blank(), 
+              panel.grid.minor = element_blank()) 
+
+p2 <- ggplot(this_df, aes(x = repetition, y = time)) +
+     geom_point(color = "#5B9DAD", size = 1) +
+     mytheme +
+     xlab("Repetições") + ylab("Tempo (segundos)") +
+     facet_wrap(~sched, ncol = 2);
+p2
+```
+
+Gera o pdf (para o material escrito)
+
+```{r}
+pdf(file="figuras/introducao_repeticoes.pdf", width=2.4, height=1.6, useDingbats = FALSE)
+p2
+dev.off()
+```
