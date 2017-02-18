@@ -1,0 +1,66 @@
+---
+title: "Quarteto de Anscombe"
+author: "Aishameriane Schmidt e Francieli Zanon Boito"
+date: "February 16, 2017"
+---
+
+O conjunto de dados anscombe está disponível no pacote stats, no entanto, não está no formato que nós gostaríamos para plotar, então primeiro vamos criar um novo dataframe anscombe_data no formato desejado.
+
+```{r}
+library(stats)
+
+vec <- matrix(nrow =length(anscombe$x1) + length(anscombe$x2) + length(anscombe$x3) + length(anscombe$x4), ncol = 3)
+for(i in 1:length(anscombe$x1))
+{
+  vec[i,] <- c("Conjunto 1", as.numeric(anscombe$x1[i]), as.numeric(anscombe$y1[i]))
+}
+for(i in 1:length(anscombe$x2))
+{
+  vec[i+length(anscombe$x1),] <- c("Conjunto 2", as.numeric(anscombe$x2[i]), as.numeric(anscombe$y2[i]))
+}
+for(i in 1:length(anscombe$x3))
+{
+  vec[i+length(anscombe$x1)+length(anscombe$x2),] <- c("Conjunto 3", as.numeric(anscombe$x3[i]), as.numeric(anscombe$y3[i]))
+}
+for(i in 1:length(anscombe$x4))
+{
+  vec[i+length(anscombe$x1)+length(anscombe$x2)+length(anscombe$x3),] <- c("Conjunto 4", as.numeric(anscombe$x4[i]), as.numeric(anscombe$y4[i]))
+}
+anscombe_data <- data.frame(vec)
+names(anscombe_data) <- c("Dataset", "X", "Y")
+anscombe_data$X <- as.numeric(as.character(anscombe_data$X))
+anscombe_data$Y <- as.numeric(as.character(anscombe_data$Y))
+```
+
+Agora podemos plotar usando o pacote ggplot2
+
+```{r}
+library(ggplot2)
+
+mytheme <- theme_bw(base_size=10, base_family = "Times") + 
+      theme(panel.background=element_blank(), 
+          text=element_text(size=10), 
+          plot.title = element_text(size=10),  
+          legend.title = element_blank(), 
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank()) 
+
+gg <- ggplot(anscombe_data, aes(x = X, y = Y)) +
+    geom_point(color = "black", size=1) +
+    scale_x_continuous(breaks=c(3, 6, 9, 12, 15, 18)) +
+    facet_wrap(~Dataset, ncol=4) +
+    geom_smooth(formula = y ~ x, method = "lm", se=FALSE, data = anscombe_data, colour="#5B9DAD") +
+    geom_text(x = 14, y = 5, label = "Média(X) = 9.00 \n D.P.(X) = 3.31 \n Média(Y) = 7.50 \n D.P.(Y) = 2.03 \n cor(X,Y) = 0.82", size=2.7, family = "Times", fontface = "plain") +
+    geom_text(x = 16.5, y = 9.3, label = "y=3+0.5x", size=2.7, family = "Times", fontface = "plain") +
+    mytheme;
+gg
+```
+
+Gerar a figura em pdf (do material escrito)
+
+```{r}
+pdf(file="~/quarteto_anscombe.pdf", width=5.75, height=2.75, useDingbats = FALSE)
+gg
+dev.off()
+```
+
