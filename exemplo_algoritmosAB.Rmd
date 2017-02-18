@@ -1,0 +1,77 @@
+---
+title: "exemplo_algoritmosAB"
+author: "Aishameriane Schimidt e Francieli Zanon Boito"
+date: "February 16, 2017"
+output: html_document
+---
+
+Cria os conjuntos de dados (sintéticos)
+
+```{r}
+set.seed(1234)
+A_completo<-(100*rexp(n = 100, rate=10))
+B_completo<-(100*rexp(n=100, rate = 3))
+A_completo<-A_completo - mean(A_completo) + 30
+B_completo<-B_completo - mean(B_completo) + 30
+dados<-cbind(A_completo, B_completo)
+colnames(dados)<-c("A", "B")
+dados<-as.data.frame(dados)
+```
+
+Reorganiza pra ficar no formato que precisamos para plotar
+
+```{r}
+library(tidyr)
+dados<-gather(dados, chave, valores)
+```
+
+Faz o boxplot
+
+```{r}
+library(ggplot2)
+
+mytheme <- theme_bw(base_size=10, base_family = "Times") + 
+      theme(panel.background=element_blank(), 
+          text=element_text(size=10), 
+          plot.title = element_text(size=10),  
+          legend.title = element_blank(), 
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank()) 
+
+c <- ggplot(dados, aes(factor(chave), valores)) +
+    geom_boxplot(aes(fill = factor(chave))) + 
+    mytheme +
+    scale_color_manual(values=c("#5B9DAD", "#D97B7F")) +
+    scale_fill_manual(values=c("#5B9DAD", "#D97B7F")) +
+#+ guides(fill = FALSE)
+    labs(x = "Algoritmo", y = "Tempo de execução (u.t.)");
+c
+```
+
+Gera o pdf (para o material escrito)
+
+```{r}
+pdf(file="figuras/algsAB_boxplot.pdf", width=2.75, height=1.8, useDingbats = FALSE)
+c
+dev.off()
+```
+
+Faz o histograma
+
+```{r}
+h <- ggplot(dados, aes(x = valores, fill = chave)) + 
+    geom_histogram(alpha = 0.4, position = "identity", binwidth = 5) +
+    mytheme +
+    scale_color_manual(values=c("#5B9DAD", "#D97B7F")) +
+    scale_fill_manual(values=c("#5B9DAD", "#D97B7F")) +
+    labs(x = "Tempo de execução (u.t.)", y = "Número de ocorrências");
+h
+```
+
+Gera o pdf (para o material escrito)
+
+```{r}
+pdf(file="figuras/algsAB_histograma.pdf", width=2.75, height=1.8, useDingbats = FALSE)
+h
+dev.off()
+```
