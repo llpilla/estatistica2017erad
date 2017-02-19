@@ -58,6 +58,7 @@ dev.off()
 ```
 
 Testa se os dados aderem à distribuição normal
+(Fran) aqui me parece que a Aisha usou 1/lambda e (1/lambda)/sqrt(n) porque são as métricas conhecidas da distribuição exponencial, que foi usada pra gerar os dados. No entanto, uma pessoa fazendo uma análise de desempenho não saberia essas informações sobre a distribuição dos dados. Não seria mais correto (e didático) passar cálculos sobre a amostra aqui?
 ```{r}
 ks.test(tempos, 'pnorm', 1/lambda, (1/lambda)/sqrt(n))
 ```
