@@ -1,0 +1,79 @@
+---
+title: "exemplo_anova"
+author: "Francieli Zanon Boito e Aishameriane Schimidt"
+date: "February 19, 2017"
+output: html_document
+---
+
+Cria os conjuntos de dados vindo de 3 distribuições normais
+
+```{r}
+set.seed(1236)
+A<-rnorm(n=200, mean = 80, sd=10)
+B<-rnorm(n=200, mean = 95, sd = 10)
+C <- rnorm(n = 200, mean = 75, sd = 10)
+```
+
+verificamos a normalidade
+```{r}
+ks.test(A, "pnorm", mean(A), sd(A))
+ks.test(B, "pnorm", mean(B), sd(B))
+ks.test(C, "pnorm", mean(C), sd(C))
+```
+
+juntamos num dataframe só e deixamos no formato necessário para plotar
+```{r}
+library(tidyr)
+dados<- cbind(A,B,C)
+colnames(dados)<-c("A", "B", "C")
+dados<-as.data.frame(dados)
+dados<-gather(dados, chave, valores)
+```
+
+Fazer o boxplot
+```{r}
+library(ggplot2)
+
+mytheme <- theme_bw(base_size=10, base_family = "Times") + 
+      theme(panel.background=element_blank(), 
+          text=element_text(size=10), 
+          plot.title = element_text(size=10),  
+          legend.title = element_blank(), 
+          legend.position = "none",
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank()) 
+
+c <- ggplot(dados, aes(factor(chave), valores)) +
+    geom_boxplot(aes(fill = factor(chave))) + 
+    mytheme +
+    scale_color_manual(values=c("#5B9DAD", "#D97B7F", "#9dad5b")) +
+    scale_fill_manual(values=c("#5B9DAD", "#D97B7F", "#9dad5b")) +
+    labs(x = "Algoritmo", y = "Tempo de execução (u.t.)");
+c
+```
+
+
+exporta o pdf (para o material escrito)
+
+```{r}
+pdf(file="figuras/exemplo_anova_boxplot.pdf", width=2.5, height=1.8, useDingbats = FALSE)
+c
+dev.off()
+```
+
+
+```{r}
+install.packages("car")
+library(car)
+leveneTest(dados$valores~as.factor(dados$chave))
+
+anova<-aov(valores~as.factor(chave), data = dados)
+anova
+summary(anova)
+
+install.packages("agricolae")
+library(agricolae)
+mc <- HSD.test(anova, "as.factor(chave)", group = TRUE, console=TRUE)
+mc
+```
+
