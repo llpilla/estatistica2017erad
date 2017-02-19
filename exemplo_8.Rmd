@@ -1,0 +1,65 @@
+---
+title: "exemplo_8"
+author: "Francieli Zanon Boito e Aishameriane Schimidt"
+date: "February 19, 2017"
+output: html_document
+---
+
+# Parte 2 - exemplo 1.8
+
+Parâmetros
+```{r}
+n = 100
+lambda = 3
+nmedias = 1000
+set.seed(1234)
+```
+
+Cria o vetor para os tempos e as médias
+```{r}
+tempos<-rep(0,n)
+medias<-rep(0, nmedias)
+```
+
+Retira 100 amostras de tamanho 100 da população e calcula sua média
+```{r}
+for (i in 1:length(medias)){
+  tempos<-rexp(n=length(tempos), rate = lambda)
+  medias[i]<-mean(tempos)
+}
+
+mean(medias)
+sd(medias)
+```
+
+Plota o histograma
+```{r}
+library(ggplot2)
+
+mytheme <- theme_bw(base_size=10, base_family = "Times") + 
+      theme(panel.background=element_blank(), 
+          text=element_text(size=10), 
+          plot.title = element_text(size=10),  
+          legend.title = element_blank(), 
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank()) 
+
+h <- qplot(medias, 
+      geom='histogram',
+      ylab = 'Número de ocorrências',
+      xlab = 'Tempo de execução (u.t.)',
+      fill = I("#5B9DAD")) + 
+    mytheme;
+h
+```
+
+```{r}
+pdf(file="figuras/exemplo_8_histograma.pdf", width=2.75, height=1.8, useDingbats = FALSE)
+h
+dev.off()
+```
+
+Testa se os dados aderem à distribuição normal
+```{r}
+ks.test(medias, 'pnorm', 1/lambda, (1/lambda)/sqrt(n))
+```

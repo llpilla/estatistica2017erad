@@ -1,0 +1,64 @@
+---
+title: "exemplo_7"
+author: "Francieli Zanon Boito e Aishameriane Schimidt"
+date: "February 19, 2017"
+output: html_document
+---
+
+# Parte 1 (Exemplo 1.7)
+
+Fixa a semente aleatória
+```{r}
+set.seed(1234)
+```
+
+Parâmetros de controle
+```{r}
+lambda = 3
+n = 100
+```
+
+Gera o vetor dos dados vazio
+```{r}
+tempos<-rep(0,n)
+```
+
+Seleciona sem reposição 100 valores da população
+```{r}
+tempos<-rexp(n = length(tempos), rate = 3)
+```
+
+Plota o histograma
+```{r}
+library(ggplot2)
+
+mytheme <- theme_bw(base_size=10, base_family = "Times") + 
+      theme(panel.background=element_blank(), 
+          text=element_text(size=10), 
+          plot.title = element_text(size=10),  
+          legend.title = element_blank(), 
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank()) 
+
+h <- qplot(tempos, 
+      geom='histogram',
+      ylab = 'Número de ocorrências',
+      xlab = 'Tempo de execução (u.t.)',
+      fill = I("#5B9DAD")) + 
+    mytheme;
+h
+```
+
+exporta o pdf (para o material escrito)
+
+```{r}
+pdf(file="figuras/exemplo_7_histograma.pdf", width=2.75, height=1.8, useDingbats = FALSE)
+h
+dev.off()
+```
+
+Testa se os dados aderem à distribuição normal
+```{r}
+ks.test(tempos, 'pnorm', 1/lambda, (1/lambda)/sqrt(n))
+```
+
