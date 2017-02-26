@@ -59,6 +59,9 @@ dev.off()
 
 Testa se os dados aderem à distribuição normal
 (Fran) aqui me parece que a Aisha usou 1/lambda e (1/lambda)/sqrt(n) porque são as métricas conhecidas da distribuição exponencial, que foi usada pra gerar os dados. No entanto, uma pessoa fazendo uma análise de desempenho não saberia essas informações sobre a distribuição dos dados. Não seria mais correto (e didático) passar cálculos sobre a amostra aqui?
+
+(Aisha) Sim, tem tanto a questão da dstribuição exponencial (que pode ser "parametrizada" de duas formas) e como fica o parâmetro como tem a questão de como é a média e o desvio na distribuição amostral. Para o primeiro assunto dá para explicar no próprio documento (já que são dados simulados, acaba não fazendo muita diferença qual a distribuição). O segundo estou pensando em escrever em um documento à parte, pois vai ter relação com o teorema do limite central. Já pensei em uns exemplos (daqueles que mostram convergência) que acabaram não cabendo no capítulo e vou incorporar.
+
 ```{r}
 ks.test(tempos, 'pnorm', 1/lambda, (1/lambda)/sqrt(n))
 ```
