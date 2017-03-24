@@ -10,7 +10,7 @@ Esse é um exemplo com resultados de uma pesquisa real, disponiveis em um arquiv
 Lê o dataframe do arquivo e faz alguns ajustes
 
 ```{r}
-this_df <- read.csv("csv/escalonadores.csv", header=TRUE, sep=",")
+this_df <- read.csv("../csv/escalonadores.csv", header=TRUE, sep=",")
 
 #cria um novo dataframe que e criado a partir do anterior, agrupando os resultados das repeticoes de cada escalonador numa unica linha, com o valor de tempo medio.
 library(plyr)
@@ -48,7 +48,7 @@ p1
 Gera o pdf (para o material escrito)
 
 ```{r}
-pdf(file="figuras/introducao_media.pdf", width=2.4, height=1.6, useDingbats = FALSE)
+pdf(file="../figuras/introducao_media.pdf", width=2.4, height=1.6, useDingbats = FALSE)
 p1
 dev.off()
 ```
@@ -77,7 +77,7 @@ p2
 Gera o pdf (para o material escrito)
 
 ```{r}
-pdf(file="figuras/introducao_repeticoes.pdf", width=2.4, height=1.6, useDingbats = FALSE)
+pdf(file="../figuras/introducao_repeticoes.pdf", width=2.4, height=1.6, useDingbats = FALSE)
 p2
 dev.off()
 ```

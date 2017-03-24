@@ -1,6 +1,6 @@
 ---
 title: "exemplo_anova"
-author: "Francieli Zanon Boito e Aishameriane Schimidt"
+author: "Francieli Zanon Boito e Aishameriane Schmidt"
 date: "February 19, 2017"
 output: html_document
 ---
@@ -56,14 +56,13 @@ c
 exporta o pdf (para o material escrito)
 
 ```{r}
-pdf(file="figuras/exemplo_anova_boxplot.pdf", width=2.5, height=1.8, useDingbats = FALSE)
+pdf(file="../figuras/exemplo_anova_boxplot.pdf", width=2.5, height=1.8, useDingbats = FALSE)
 c
 dev.off()
 ```
 
 
 ```{r}
-install.packages("car")
 library(car)
 leveneTest(dados$valores~as.factor(dados$chave))
 
@@ -71,7 +70,6 @@ anova<-aov(valores~as.factor(chave), data = dados)
 anova
 summary(anova)
 
-install.packages("agricolae")
 library(agricolae)
 mc <- HSD.test(anova, "as.factor(chave)", group = TRUE, console=TRUE)
 mc

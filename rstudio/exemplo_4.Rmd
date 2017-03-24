@@ -1,6 +1,6 @@
 ---
 title: "exemplo_algoritmosAB"
-author: "Aishameriane Schimidt e Francieli Zanon Boito"
+author: "Aishameriane Schmidt e Francieli Zanon Boito"
 date: "February 16, 2017"
 output: html_document
 ---
@@ -52,7 +52,7 @@ c
 Gera o pdf (para o material escrito)
 
 ```{r}
-pdf(file="figuras/algsAB_boxplot.pdf", width=2.5, height=1.8, useDingbats = FALSE)
+pdf(file="../figuras/algsAB_boxplot.pdf", width=2.5, height=1.8, useDingbats = FALSE)
 c
 dev.off()
 ```
@@ -72,7 +72,7 @@ h
 Gera o pdf (para o material escrito)
 
 ```{r}
-pdf(file="figuras/algsAB_histograma.pdf", width=2.75, height=1.8, useDingbats = FALSE)
+pdf(file="../figuras/algsAB_histograma.pdf", width=2.75, height=1.8, useDingbats = FALSE)
 h
 dev.off()
 ```

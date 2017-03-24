@@ -59,7 +59,7 @@ gg
 Gerar a figura em pdf (do material escrito)
 
 ```{r}
-pdf(file="figuras/quarteto_anscombe.pdf", width=5.75, height=2.6, useDingbats = FALSE)
+pdf(file="../figuras/quarteto_anscombe.pdf", width=5.75, height=2.6, useDingbats = FALSE)
 gg
 dev.off()
 ```
